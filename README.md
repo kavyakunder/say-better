@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # On the Spot — Impromptu Speech Coach (React + TypeScript)
 
 A small web app for practicing 1-minute impromptu speeches: get a random
@@ -122,6 +120,4 @@ Get a key at https://console.anthropic.com if you don't have one.
   of fields it actually uses rather than pulling in a third-party
   `@types` package.
 
-<!-- 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 -->
->>>>>>> dd75c4d (first commit)
 # vocab-coach
