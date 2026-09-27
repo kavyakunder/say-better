@@ -1,4 +1,4 @@
-# On the Spot — Curiosity Speech Coach
+# Say Better — Curiosity Speech Coach.
 
 Practice explaining things out loud. On the Spot gives you a curiosity
 question ("Why does popcorn pop?"), a few things to look into, and a handful
