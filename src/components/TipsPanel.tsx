@@ -1,19 +1,20 @@
 const TIPS = [
   {
     title: "Have a shape",
-    body: "Point, reason, example, point again. Know your first and last line before you start.",
+    body: "Point → Reason → Example → Point. Know your start and finish.",
   },
   {
     title: "Slow down",
-    body: "Aim for 120–150 words per minute. Nerves speed you up, so check your pace after each take.",
+
+    body: "Aim for 120–150 WPM. Let your words breathe.",
   },
   {
     title: "Pause instead of “um”",
-    body: "A silent beat sounds confident. A filler word sounds unsure.",
+    body: "A short pause sounds more confident than a filler.",
   },
   {
-    title: "Use a word early",
-    body: "Work one target word into your first 15 seconds, while it still fits naturally.",
+    title: "Use the defined word early",
+    body: "Work the target word into your first 15 seconds naturally",
   },
 ];
 
@@ -33,6 +34,10 @@ const FAQS = [
   {
     q: "Can I try it without recording?",
     a: "Yes. Tap “Try a sample answer” under the prompt to load an example transcript and go straight to feedback.",
+  },
+  {
+    q: "Can I switch off my video?",
+    a: "Yes, you can use audio only.but for confidence practice, we encourage keeping your video on.",
   },
 ];
 

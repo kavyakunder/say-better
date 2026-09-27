@@ -3,6 +3,8 @@ import type { Topic } from "../data/topics";
 interface TopicPanelProps {
   topic: Topic;
   onNewTopic: () => void;
+  /** True while recording, so a sample transcript can't replace a take in progress. */
+  sampleDisabled?: boolean;
   onUseSampleAnswer?: () => void;
 }
 
@@ -15,7 +17,7 @@ const CATEGORY_LABELS: Record<Topic["category"], string> = {
   science: "Science",
 };
 
-export default function TopicPanel({ topic, onNewTopic, onUseSampleAnswer }: TopicPanelProps) {
+export default function TopicPanel({ topic, onNewTopic, onUseSampleAnswer, sampleDisabled = false }: TopicPanelProps) {
   return (
     <section className="panel topic-panel">
       <header className="panel-header">
@@ -26,7 +28,7 @@ export default function TopicPanel({ topic, onNewTopic, onUseSampleAnswer }: Top
       <div className="topic-card">
         <span className="topic-category">{CATEGORY_LABELS[topic.category]}</span>
         <h3 className="topic-text">{topic.question}</h3>
-        <p className="topic-spark">{topic.spark}</p>
+        {/* <p className="topic-spark">{topic.spark}</p> */}
 
         {topic.vocabWords.length > 0 && (
           <div className="topic-tags">
@@ -43,12 +45,12 @@ export default function TopicPanel({ topic, onNewTopic, onUseSampleAnswer }: Top
       </div>
 
       <div className="topic-controls">
-        <button className="btn btn-ghost" type="button" onClick={onNewTopic}>
+        <button className="btn btn-primary" type="button" onClick={onNewTopic}>
           New topic
         </button>
 
         {onUseSampleAnswer && (
-          <button className="btn btn-ghost" type="button" onClick={onUseSampleAnswer}>
+          <button className="btn btn-ghost" type="button" onClick={onUseSampleAnswer} disabled={sampleDisabled}>
             Try a sample answer
           </button>
         )}

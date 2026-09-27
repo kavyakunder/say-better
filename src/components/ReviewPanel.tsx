@@ -34,7 +34,7 @@ export default function ReviewPanel({
       <div className="review-layout">
         <div className="review-video-col">
           <video src={videoUrl} controls playsInline />
-          <a className="btn btn-ghost" href={videoUrl} download="on-the-spot-recording.webm">
+          <a className="btn btn-ghost" href={videoUrl} download="say-better-recording.webm">
             Download video
           </a>
         </div>

@@ -20,6 +20,8 @@ export function useRecorder({ recordSeconds, onStart, onStop }: UseRecorderOptio
   const chunksRef = useRef<Blob[]>([]);
   const startTimeRef = useRef<number>(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Set by cancel() so the in-flight recording is thrown away instead of reported.
+  const discardRef = useRef(false);
 
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -37,8 +39,17 @@ export function useRecorder({ recordSeconds, onStart, onStop }: UseRecorderOptio
     setIsRecording(false);
   }, [clearTimer]);
 
+  /** Stop without keeping the take, and put the timer back to full. */
+  const cancel = useCallback(() => {
+    discardRef.current = true;
+    stop();
+    chunksRef.current = [];
+    setRemainingSeconds(recordSeconds);
+  }, [stop, recordSeconds]);
+
   const start = useCallback(
     (stream: MediaStream) => {
+      discardRef.current = false;
       chunksRef.current = [];
       setRemainingSeconds(recordSeconds);
 
@@ -50,6 +61,7 @@ export function useRecorder({ recordSeconds, onStart, onStop }: UseRecorderOptio
       };
 
       recorder.onstop = () => {
+        if (discardRef.current) return;
         const durationSeconds = Math.round((Date.now() - startTimeRef.current) / 1000);
         const blob = new Blob(chunksRef.current, { type: "video/webm" });
         onStop?.(blob, durationSeconds);
@@ -76,5 +88,5 @@ export function useRecorder({ recordSeconds, onStart, onStop }: UseRecorderOptio
     [recordSeconds, onStart, onStop, stop, clearTimer]
   );
 
-  return { isRecording, remainingSeconds, start, stop };
+  return { isRecording, remainingSeconds, start, stop, cancel };
 }

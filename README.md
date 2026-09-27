@@ -1,6 +1,6 @@
-# Say Better — Curiosity Speech Coach.
+# Say Better — Curiosity Speech Coach
 
-Practice explaining things out loud. On the Spot gives you a curiosity
+Practice explaining things out loud. Say Better gives you a curiosity
 question ("Why does popcorn pop?"), a few things to look into, and a handful
 of vocabulary words to work in. Research it for a couple of minutes, then
 record a one-minute explanation on camera and get AI coaching on clarity,

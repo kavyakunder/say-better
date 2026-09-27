@@ -15,15 +15,13 @@ import { RECORD_SECONDS } from "./config";
 import type { FeedbackResult } from "./types";
 import { SAMPLE_ANSWERS } from "./utils/test";
 import TipsFaqPanel from "./components/TipsPanel";
+import LogoMark from "./components/Logo";
 
 const STEPS = ["Prompt", "Record", "Review", "Feedback"];
 
 export default function App() {
   // --- topic -----------------------------------------------------------
   const [topic, setTopic] = useState(() => getRandomTopic(null));
-  const handleNewTopic = useCallback(() => {
-    setTopic((prev) => getRandomTopic(prev));
-  }, []);
 
   // --- camera / mic ------------------------------------------------------
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -123,13 +121,15 @@ export default function App() {
   const fillerCounts = useMemo(() => countFillerWords(reviewTranscript), [reviewTranscript]);
 
   const transcriptSourceNote = speech.supported
-    ? "(auto-transcribed — please proofread, speech recognition isn't perfect)"
+    ? "(auto-transcribed — please proofread, edit below if needed✏️; speech recognition isn't perfect)"
     : "(not auto-transcribed in this browser — type what you said)";
 
   // --- AI feedback -----------------------------------------------------------
   const [feedback, setFeedback] = useState<FeedbackResult | null>(null);
   const [feedbackLoading, setFeedbackLoading] = useState(false);
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
+  // Bumped on every request and on reset, so a slow response for an old take is ignored.
+  const feedbackRequestRef = useRef(0);
 
   const handleGetFeedback = useCallback(async () => {
     if (!reviewTranscript.trim()) {
@@ -137,6 +137,7 @@ export default function App() {
       return;
     }
 
+    const requestId = ++feedbackRequestRef.current;
     setFeedbackLoading(true);
     setFeedbackError(null);
 
@@ -163,13 +164,36 @@ export default function App() {
       }
 
       const parsed: FeedbackResult = await response.json();
-      setFeedback(parsed);
+      if (requestId === feedbackRequestRef.current) setFeedback(parsed);
     } catch (err) {
-      setFeedbackError(err instanceof Error ? err.message : "Something went wrong.");
+      if (requestId === feedbackRequestRef.current) {
+        setFeedbackError(err instanceof Error ? err.message : "Something went wrong.");
+      }
     } finally {
-      setFeedbackLoading(false);
+      if (requestId === feedbackRequestRef.current) setFeedbackLoading(false);
     }
   }, [reviewTranscript, topic, durationSeconds, wordCount, wpm, fillerCounts]);
+
+  // --- new topic: start over ---------------------------------------------------
+  const handleNewTopic = useCallback(() => {
+    // Abandon any take in progress and put the timer back to full.
+    recorder.cancel();
+    speech.stop();
+    feedbackRequestRef.current++;
+    setTopic((prev) => getRandomTopic(prev));
+    setVideoUrl((prevUrl) => {
+      if (prevUrl) URL.revokeObjectURL(prevUrl);
+      return null;
+    });
+    setDurationSeconds(0);
+    setReviewTranscript("");
+    setHasRecorded(false);
+    setFeedback(null);
+    setFeedbackError(null);
+    setFeedbackLoading(false);
+    speech.reset();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [recorder, speech]);
 
   const currentStep = feedback ? 3 : hasRecorded ? 2 : mediaStream ? 1 : 0;
 
@@ -187,9 +211,11 @@ export default function App() {
 
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="wordmark" href="#" aria-label="On the Spot, home">
-            <span className="wordmark-dot" />
-            ON&nbsp;THE&nbsp;SPOT
+          <a className="wordmark" href="#" aria-label="Say Better, home">
+            <LogoMark />
+            <span className="wordmark-text">
+              Say <span className="wordmark-accent">Better</span>
+            </span>
           </a>
           <ol className="steps" aria-label="Progress">
             {STEPS.map((label, i) => {
@@ -210,14 +236,19 @@ export default function App() {
 
       <main className="page">
         <section className="intro">
-          <h1 className="intro-title">Get curious. Explain it out loud.</h1>
+          <h1 className="intro-title">Turn curiosity into clarity</h1>
           <p className="intro-text">
-            Research the prompt for a few minutes, record a one-minute explanation, and get coached on how you said it.
+            Research a prompt. Explain it in one minute. Get coached on how clearly you articulate your thoughts.
           </p>
         </section>
 
         <div className="workspace">
-          <TopicPanel topic={topic} onNewTopic={handleNewTopic} onUseSampleAnswer={handleUseSampleAnswer} />
+          <TopicPanel
+            topic={topic}
+            onNewTopic={handleNewTopic}
+            onUseSampleAnswer={handleUseSampleAnswer}
+            sampleDisabled={recorder.isRecording}
+          />
 
           <RecordPanel
             videoRef={videoRef}
@@ -266,7 +297,7 @@ export default function App() {
       </main>
 
       <footer className="site-footer">
-        <p>On the Spot · Your camera and mic never leave this browser.</p>
+        <p>Say Better · Your camera and mic never leave this browser.</p>
       </footer>
     </>
   );

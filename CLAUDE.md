@@ -4,7 +4,7 @@ Guidance for Claude Code when working in this repository.
 
 ## What this app is
 
-**On the Spot** — a curiosity + vocabulary speaking coach. The user gets a
+**Say Better** — a curiosity + vocabulary speaking coach. The user gets a
 curiosity question (e.g. "Why does popcorn pop?"), researches it briefly,
 records a ~60-second spoken explanation on camera, reviews the tape, and gets
 AI feedback: scores, strengths, improvements, target-vocab usage, an upgraded
