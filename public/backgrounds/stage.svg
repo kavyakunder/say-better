@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <radialGradient id="spot" cx="50%" cy="35%" r="60%">
+      <stop offset="0" stop-color="#f2b705" stop-opacity="0.45"/>
+      <stop offset="0.5" stop-color="#7a6410" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#16171b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="curtain" x1="0" x2="1">
+      <stop offset="0" stop-color="#5a0f14"/><stop offset="0.5" stop-color="#8a1a22"/><stop offset="1" stop-color="#5a0f14"/>
+    </linearGradient>
+    <pattern id="folds" width="80" height="720" patternUnits="userSpaceOnUse">
+      <rect width="80" height="720" fill="url(#curtain)"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="720" fill="#16171b"/>
+  <rect width="1280" height="620" fill="url(#folds)" opacity="0.9"/>
+  <rect y="600" width="1280" height="120" fill="#2b1d12"/>
+  <rect y="600" width="1280" height="6" fill="#3d2a1a"/>
+  <rect width="1280" height="720" fill="url(#spot)"/>
+</svg>

@@ -5,13 +5,6 @@ export interface FillerCount {
   count: number;
 }
 
-export interface FeedbackScore {
-  label: string;
-  value: number;
-}
-
-// Replace the old FeedbackResult interface in types.ts with this.
-
 export interface VocabCheck {
   word: string;
   usedCorrectly: boolean;
@@ -26,6 +19,7 @@ export interface FeedbackResult {
     fillerControl: number;
     confidence: number;
   };
+  summary?: string;
   strengths: string[];
   improvements: string[];
   vocabUsed: VocabCheck[];
