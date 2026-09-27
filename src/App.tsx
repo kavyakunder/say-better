@@ -3,7 +3,7 @@ import TopicPanel from "./components/TopicPanel";
 import RecordPanel from "./components/RecordPanel";
 import ReviewPanel from "./components/ReviewPanel";
 import FeedbackPanel from "./components/FeedbackPanel";
-import { getRandomTopic } from "./data/topics";
+import { TOPICS, getRandomTopic } from "./data/topics";
 import { countFillerWords, countWords, wordsPerMinute } from "./utils/fillerWords";
 import { useSpeechRecognition } from "./hooks/useSpeechRecognition";
 import { useAudioWaveform } from "./hooks/useAudioWaveform";
@@ -18,6 +18,9 @@ import TipsFaqPanel from "./components/TipsPanel";
 import LogoMark from "./components/Logo";
 
 const STEPS = ["Prompt", "Record", "Review", "Feedback"];
+
+// Only these topics have a written sample answer to try the feedback with.
+const SAMPLE_TOPICS = TOPICS.filter((t) => t.id in SAMPLE_ANSWERS);
 
 export default function App() {
   // --- topic -----------------------------------------------------------
@@ -108,11 +111,22 @@ export default function App() {
 
   // --- testing shortcut: skip camera/mic entirely ---------------------------
   const handleUseSampleAnswer = useCallback(() => {
+    // If this topic has no sample, switch to one that does so the answer matches the question.
+    const sampleTopic =
+      topic.id in SAMPLE_ANSWERS ? topic : SAMPLE_TOPICS[Math.floor(Math.random() * SAMPLE_TOPICS.length)];
+    setTopic(sampleTopic);
+    // A sample has no video, so drop any earlier take's recording.
+    setVideoUrl((prevUrl) => {
+      if (prevUrl) URL.revokeObjectURL(prevUrl);
+      return null;
+    });
     setDurationSeconds(60);
-    setReviewTranscript(SAMPLE_ANSWERS[topic.id] ?? SAMPLE_ANSWERS.popcorn);
+    setReviewTranscript(SAMPLE_ANSWERS[sampleTopic.id]);
     setHasRecorded(true);
+    feedbackRequestRef.current++;
     setFeedback(null);
     setFeedbackError(null);
+    setFeedbackLoading(false);
   }, [topic]);
 
   // --- derived stats -------------------------------------------------------

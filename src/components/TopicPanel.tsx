@@ -35,8 +35,8 @@ export default function TopicPanel({ topic, onNewTopic, onUseSampleAnswer, sampl
             <span className="topic-tags-label">Try to use</span>
             <ul className="topic-chip-list">
               {topic.vocabWords.map((v) => (
-                <li key={v.word} className="topic-chip">
-                  {v.word}
+                <li key={v} className="topic-chip">
+                  {v}
                 </li>
               ))}
             </ul>
