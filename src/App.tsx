@@ -16,6 +16,7 @@ import type { FeedbackResult } from "./types";
 import { SAMPLE_ANSWERS } from "./utils/test";
 import TipsFaqPanel from "./components/TipsPanel";
 import LogoMark from "./components/Logo";
+import SampleTranscriptPanel from "./components/SampleTranscriptPanel";
 
 const STEPS = ["Prompt", "Record", "Review", "Feedback"];
 
@@ -297,7 +298,9 @@ export default function App() {
                 fillerCounts={fillerCounts}
               />
             )}
-
+            {!showReview && (
+              <SampleTranscriptPanel transcript={reviewTranscript} wordCount={wordCount} fillerCounts={fillerCounts} />
+            )}
             <FeedbackPanel
               onGetFeedback={handleGetFeedback}
               loading={feedbackLoading}

@@ -901,6 +901,23 @@ img {
   font-size: 0.78rem;
 }
 
+/* sample answer transcript (no recording, so no Review panel) */
+.sample-meta {
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.sample-transcript {
+  margin: 0;
+  padding: 1rem 1.2rem;
+  border-left: 3px solid var(--hairline-strong);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--panel-raised);
+  color: var(--paper-dim);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
 /* ==========================================================================
    Step 4 — feedback
    ========================================================================== */
