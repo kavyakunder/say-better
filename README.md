@@ -1,3 +1,6 @@
+
+
+
 <div align="center">
 
 <img src="public/favicon.svg" width="72" alt="Say Better logo" />
@@ -10,6 +13,8 @@ Pick a curiosity question, explain it out loud in one minute,<br />
 and get AI coaching on how clearly you said it.
 
 [**Try it live →**](https://say-better-five.vercel.app)
+
+https://github.com/user-attachments/assets/d6010c72-6853-4dd8-8a00-b665023842ce
 
 </div>
 
